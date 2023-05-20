@@ -7,7 +7,7 @@ User=root
 Group=admin
 Type=simple
 #WorkingDirectory=/opt/tgbot
-ExecStart=/root/aiogram_v3_template/venv/bin/python /root/aiogram_v3_template/bot.py
+ExecStart=/root/bot_vpn/venv/bin/python /root/bot_vpn/bot.py
 Restart=always
 
 [Install]
