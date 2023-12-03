@@ -96,5 +96,5 @@ async def waiting_answer(message: Message, state: FSMContext):
 
 
 @support_router.callback_query(F.data == 'delete', AdminFilter())
-async def delete_question(call: CallbackQuery, state: FSMContext):
+async def delete_question(call: CallbackQuery):
     await call.message.delete()

@@ -7,8 +7,8 @@ from aiogram.types import CallbackQuery
 from pymongo import ReturnDocument
 
 from tgbot.db.db_api import payments, subs
-from tgbot.services.yoomoney_api import PaymentYooMoney, NoPaymentFound
 from tgbot.keyboards.inline import settings_keyboard
+from tgbot.services.yoomoney_api import PaymentYooMoney, NoPaymentFound
 
 pay_router = Router()
 

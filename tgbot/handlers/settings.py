@@ -21,3 +21,5 @@ async def choose_os(call: CallbackQuery):
 
     data = call.data.split(':')
     os = data[1]
+
+    # дописать выдачу доступа к VPN'у

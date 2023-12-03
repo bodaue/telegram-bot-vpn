@@ -6,6 +6,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 
+from tgbot.config import Config
 from tgbot.handlers.pay import pay_router
 from tgbot.handlers.settings import settings_router
 from tgbot.handlers.support import support_router
@@ -25,12 +26,17 @@ async def on_startup(bot: Bot, admin_ids: list[int]):
     await broadcaster.broadcast(bot, admin_ids, "Бот запущен!")
 
 
-def register_global_middlewares(dp: Dispatcher, config):
+def register_global_middlewares(dp: Dispatcher, config: Config):
     dp.message.outer_middleware(ConfigMiddleware(config))
     dp.callback_query.outer_middleware(ConfigMiddleware(config))
     dp.message.middleware(ThrottlingMiddleware())
     dp.callback_query.middleware(ThrottlingMiddleware())
     dp.callback_query.middleware(CallbackAnswerMiddleware())
+
+
+def register_global_filters(dp: Dispatcher):
+    dp.message.filter(F.chat.type == "private")
+    dp.callback_query.filter(F.message.chat.type == "private")
 
 
 def register_logger():
@@ -62,9 +68,8 @@ async def main():
         settings_router
     ]:
         dp.include_router(router)
-    dp.message.filter(F.chat.type == "private")
-    dp.callback_query.filter(F.message.chat.type == "private")
 
+    register_global_filters(dp)
     register_global_middlewares(dp, config)
 
     await set_default_commands(bot)
