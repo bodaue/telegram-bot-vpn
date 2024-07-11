@@ -8,4 +8,4 @@ class AdminFilter(BaseFilter):
     is_admin: bool = True
 
     async def __call__(self, obj: Message, config: Config) -> bool:
-        return (obj.from_user.id in config.tg_bot.admin_ids) == self.is_admin
+        return (obj.from_user.id in config.common.admins) == self.is_admin

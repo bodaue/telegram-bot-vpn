@@ -14,17 +14,19 @@ class NotEnoughMoney(Exception):
     pass
 
 
-def authorize(client_id, redirect_uri):
+def authorize(client_id: str, redirect_uri: str) -> None:
     Authorize(
         client_id=client_id,
         redirect_uri=redirect_uri,
-        scope=["account-info",
-               "operation-history",
-               "operation-details",
-               "incoming-transfers",
-               "payment-p2p",
-               "payment-shop",
-               ])
+        scope=[
+            "account-info",
+            "operation-history",
+            "operation-details",
+            "incoming-transfers",
+            "payment-p2p",
+            "payment-shop",
+        ],
+    )
 
 
 @dataclass
@@ -32,11 +34,11 @@ class PaymentYooMoney:
     amount: int
     id: str = None
 
-    def create(self):
+    def create(self) -> None:
         self.id = str(uuid.uuid4())
 
-    def check_payment(self):
-        client = Client(config.misc.yoomoney_token)
+    def check_payment(self) -> float | None:
+        client = Client(config.yoomoney.token)
         history = client.operation_history(label=self.id)
 
         for operation in history.operations:
@@ -45,11 +47,13 @@ class PaymentYooMoney:
             raise NoPaymentFound
 
     @property
-    def invoice(self):
-        quickpay = Quickpay(receiver=config.misc.yoomoney_wallet,
-                            quickpay_form='shop',
-                            targets='Deposit balance',
-                            paymentType='SB',
-                            sum=self.amount,
-                            label=self.id)
-        return quickpay.base_url
+    def invoice(self) -> str:
+        quick_pay = Quickpay(
+            receiver=config.yoomoney.wallet,
+            quickpay_form="shop",
+            targets="Deposit balance",
+            paymentType="SB",
+            sum=self.amount,
+            label=self.id,
+        )
+        return quick_pay.base_url

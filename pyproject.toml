@@ -13,7 +13,17 @@ YooMoney = "0.1.0"
 cachetools = "5.3.3"
 betterlogging = "^1.0.0"
 pydantic-settings = "^2.3.4"
+requests = "^2.32.3"
+pydantic = "^2.8.2"
 
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.10.1"
+
+[tool.mypy]
+plugins = ["pydantic.mypy"]
+strict = true
+follow_imports = "normal"
+ignore_missing_imports = true
 
 [build-system]
 requires = ["poetry-core"]

@@ -8,6 +8,6 @@ admin_router = Router()
 admin_router.message.filter(AdminFilter())
 
 
-@admin_router.message(Command(commands='test'))
+@admin_router.message(Command(commands="test"))
 async def process_test(message: Message):
     print(message)
